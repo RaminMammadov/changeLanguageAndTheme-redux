@@ -1,23 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import AZ from './Components/AZ';
+import TR from './Components/TR';
+import ENG from './Components/ENG';
+import { useDispatch, useSelector } from "react-redux";
+import { setLanguage } from './Stores/AppSlice';
 
 function App() {
+  const DarkTheme = useSelector(state => state.AppSlice.darkMode);
+  const language = useSelector(state => state.AppSlice.language);
+  const dispatch = useDispatch();
+  const langs = ['AZ','TR','ENG'];
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={DarkTheme ? 'App-dark' : 'App-light'}>
+      {
+        langs.map(lang => {
+          return  <button className={language === lang ? 'active button' : 'button'} onClick={() => dispatch(setLanguage(lang))}>{lang}</button>
+        })
+      }
+
+      {
+        language === 'AZ' ? <AZ /> : language === 'TR' ? <TR /> : <ENG />
+      }
     </div>
   );
 }
